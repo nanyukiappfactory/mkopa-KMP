@@ -57,11 +57,11 @@ class Actioncard_model extends CI_Model
 
     public function count_response($action_id)
     {
-        // $this->db->distinct('response_id');
+        $this->db->select('response_id');
+        $this->db->distinct('response_id');
         $this->db->where('action_id', $action_id);
         $query = $this->db->get("action_responses");
-
-        echo json_encode($query->result());die();
+        
         return $query->num_rows();
     }
 
