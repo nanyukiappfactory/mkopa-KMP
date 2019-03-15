@@ -149,4 +149,114 @@ class Kaizala_model extends CI_Model
             
         }
     }
+
+    public function create_event_webhook($group_unique_id)
+    {
+        $send_data = array(
+            "objectId" => $group_unique_id,
+            "objectType" => "Group",
+            "eventTypes" => array(
+                "ActionResponse",
+                "JobCreated",
+                "SurveyResponse",
+                "JobResponse",
+                "PollResponse",
+                "LetsMeetResponse"
+            ),
+            "callBackUrl" => "https://mkopa-dev.azurewebsites.net/actions/get-actions",
+            "callBackToken" => "tokenToBeVerifiedByCallback",
+            "callBackContext" => "https://mkopa-dev.azurewebsites.net/actions/get-action-cards"
+        );
+
+        $curl = curl_init();
+
+        $access_token = $this->get_access_token();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://kms.kaiza.la/v1/webhook",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($send_data),
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "accessToken: " . $access_token,
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) 
+        {
+            $error = "cURL Error #:" . $err;
+            return array(FALSE, $error);
+        } 
+        else 
+        {
+            $obj = json_decode($response);
+            if(array_key_exists('webhookId', $obj))
+            {
+                $webhook_id = $obj->webhookId;
+                return array(TRUE, $webhook_id); 
+            }
+            return array(FALSE, $obj);
+        }
+    }
+
+
+    public function delete_event_webhook($group_unique_id)
+    {
+        $curl = curl_init();
+
+        $access_token = $this->get_access_token();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://kms.kaiza.la/v1/webhook/" . $group_unique_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "DELETE",
+            CURLOPT_POSTFIELDS => "",
+            CURLOPT_HTTPHEADER => array(
+                "accessToken: " . $access_token,
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) 
+        {
+            $error = "cURL Error #:" . $err;
+            return array(FALSE, $error);
+        } 
+        else 
+        {
+            $obj = json_decode($response);
+            if(array_key_exists('message', $obj))
+            {
+                return array(
+                    FALSE,
+                    $obj
+                );
+            }
+            else
+            {
+                return array(
+                    TRUE,
+                    $obj
+                );
+            }
+        }
+    }
 }

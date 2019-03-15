@@ -47,6 +47,17 @@ class Migration_Add_groups extends CI_Migration
                 'constraint' => '10',
                 'null' => true,
             ),
+            'webhook_id' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true,
+            ),
+            'group_status' => array(
+                'type' => 'TINYINT',
+                'constraint' => '2',
+                'null' => true,
+                'default' => '0',
+            ),
             'deleted' => array(
                 'type' => 'TINYINT',
                 'constraint' => '1',

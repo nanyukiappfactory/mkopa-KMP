@@ -45,7 +45,7 @@
 							<?php echo date('d M Y H:i', strtotime($row->created_at)); ?>
 						</td>
 						<td>
-							<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#groupActions<?php echo $row->group_id; ?>">
+							<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#groupActions<?php echo $row->group_id; ?>">
 								Action Cards
 							</button>
 							<?php 
@@ -55,6 +55,16 @@
 							$this->load->view('groups/group_action_cards', $s_group);
 							?>
 							<a href="<?php echo base_url(); ?>administration/group-users/<?php echo $group_name; ?>/<?php echo $row->group_id; ?>" class="btn btn-secondary btn-sm"><i class="fa fa-users"></i></a>
+							<?php if($row->group_status == 1)
+							{?>
+							<a href="<?php echo base_url();?>administration/deactivate-group/<?php echo $row->group_id;?>"
+								class="btn btn-sm btn-warning" onclick="return confirm('Are you Sure You want to Deactivate???')"><i class="fas fa-thumbs-down"></i></a>
+							<?php }
+									else
+									{ ?>
+							<a href="<?php echo base_url();?>administration/activate-group/<?php echo $row->group_id;?>"
+								class="btn btn-sm btn-success" onclick="return confirm('Are you Sure You want to Activate???')"><i class="fas fa-thumbs-up"></i></a>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php }}?>

@@ -105,4 +105,42 @@ class Group_model extends CI_Model
 
         return $query;
     }
+
+    public function activate_group($group_id, $webhook_id)
+    {
+        $data = array(
+            "webhook_id" => $webhook_id,
+            "group_status" => 1
+        );
+
+        $this->db->set($data);
+        $this->db->where('group_id = ' . $group_id);
+        if($this->db->update('groups'))
+        {
+            return TRUE;
+        }
+        else 
+        {
+            return FALSE;
+        }
+    }
+
+    public function deactivate_group($group_id)
+    {
+        $data = array(
+            "webhook_id" => "null",
+            "group_status" => 0
+        );
+
+        $this->db->set($data);
+        $this->db->where('group_id = ' . $group_id);
+        if($this->db->update('groups'))
+        {
+            return TRUE;
+        }
+        else 
+        {
+            return FALSE;
+        }
+    }
 }

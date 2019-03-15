@@ -275,4 +275,63 @@ class Group extends admin
 
         redirect('administration/all-groups');
     }
+
+    public function activate_group($group_id)
+    {
+        //get group-unique id
+        $group_unique_id_obj = $this->group_model->get_group_unique_id($group_id);
+        $group_unique_id = $group_unique_id_obj->group_unique_id;
+        
+        $result = $this->kaizala_model->create_event_webhook($group_unique_id);
+
+        if($result[0] == TRUE)
+        {
+            $webhook_id = $result[1];
+            $activate_status = $this->group_model->activate_group($group_id, $webhook_id);
+
+            if($activate_status)
+            {
+                $this->session->set_flashdata('success', 'Activated Successfully!!');
+            }
+            else
+            {
+                $this->session->set_flashdata('success', 'Unable to activate!!');
+            }
+        }
+        else 
+        {
+            $this->session->set_flashdata('error', $result[1]->message);
+        }
+
+        redirect('administration/all-groups');
+    }
+
+    public function deactivate_group($group_id)
+    {
+        //get group-unique id
+        $group_unique_id_obj = $this->group_model->get_group_unique_id($group_id);
+        $group_unique_id = $group_unique_id_obj->group_unique_id;
+        
+        $result = $this->kaizala_model->delete_event_webhook($group_unique_id);
+
+        if($result[0] == TRUE)
+        {
+            $activate_status = $this->group_model->deactivate_group($group_id);
+
+            if($activate_status)
+            {
+                $this->session->set_flashdata('success', 'Deactivated Successfully!!');
+            }
+            else
+            {
+                $this->session->set_flashdata('success', 'Unable to deactivate!!');
+            }
+        }
+        else 
+        {
+            $this->session->set_flashdata('error', $result[1]->message);
+        }
+
+        redirect('administration/all-groups');
+    }
 }
