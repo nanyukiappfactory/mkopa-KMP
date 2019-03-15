@@ -1,7 +1,7 @@
 <?php
 $table_row_contents = "";
 if (count($action_cards) > 0) {
-    $count = 0;
+    $count = 1;
     foreach ($action_cards as $row) {
         $table_row_contents .= "
 		<tr>
