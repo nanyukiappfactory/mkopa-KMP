@@ -2,13 +2,88 @@
 
 class Actioncard_model extends CI_Model
 {
-    public function get_action_cards($limit, $start, $order, $order_method, $where)
+    public function save_action_card($json_object, $group_name, $control, $action_card_id = NULL)
     {
-        if ($where != null) {
-            $this->db->where($where);
+        if($control == 'save' || $control == 'created')
+        {
+            $action_card_unique_id = $json_object->data->actionId;
+
+            $action_package_id = $control == 'save' ? $json_object->data->actionPackageId : 'null';
+            $group_unique_id = $json_object->data->groupId;
+            $action_card_subscription_id = $json_object->subscriptionId;
+            $action_card_object_id = $json_object->objectId;
+            $action_card_responder_id = $control == 'save' ? $json_object->data->responseId : 'null';
+            $action_card_responder_phone = $control == 'save' ? $json_object->data->responder : 'null';
+            $action_card_responder_name = $control == 'save' ? $json_object->data->responderName : 'null';
+            $action_card_event_type = $json_object->eventType;
+
+            $data = array(
+                'action_card_unique_id' => $action_card_unique_id,
+                'action_card_package' => $action_package_id,
+                'group_unique_id' => $group_unique_id,
+                'group_name' => $group_name,
+                'action_card_subscription_id' => $action_card_subscription_id,
+                'action_card_object_id' => $action_card_object_id,
+                'action_card_responder_id' => $action_card_responder_id,
+                'action_card_responder_phone' => $action_card_responder_phone,
+                'action_card_responder_name' => $action_card_responder_name,
+                'action_card_event_type' => $action_card_event_type,
+                'created_at' => date('Y/m/d H:i:s'),
+                'created_by' => 0,
+            );
+
+            $this->db->insert('action_cards', $data);
+            $action_id = $this->db->insert_id();
+
+            if ($action_id) {
+                return $action_id;
+            } else {
+                return false;
+            }
+        }
+        else if($control == 'update')
+        {
+            $action_card_responder_id = $json_object->data->responseId;
+            $action_card_responder_phone = $json_object->data->responder;
+            $action_card_responder_name = $json_object->data->responderName;
+
+            $data = array(
+                'action_card_responder_id' => $action_card_responder_id,
+                'action_card_responder_phone' => $action_card_responder_phone,
+                'action_card_responder_name' => $action_card_responder_name,
+                'created_at' => date('Y/m/d H:i:s'),
+            );
+
+            $this->db->set($data);
+            $this->db->where('action_card_id', $action_card_id);
+            if ($this->db->update('action_cards')) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+        
+    }
+
+    public function check_if_action_exists($action_card_unique_id)
+    {
+        $this->db->select('action_card_id, action_card_package');
+        $this->db->where('action_card_unique_id', $action_card_unique_id);
+        $query = $this->db->get('action_cards');
+
+        if ($query->num_rows() > 0) {
+            return ($query->result())[0];
+        } else {
+            return false;
         }
 
-        $this->db->limit($limit, $start);
+    }
+
+
+    public function get_action_cards($order, $order_method)
+    {
+        $this->db->select('*');
+        
         $this->db->order_by($order, $order_method);
 
         return $this->db->get('action_cards')->result();
@@ -29,67 +104,12 @@ class Actioncard_model extends CI_Model
         return $query->num_rows();
     }
 
-    public function action_responses_count($where)
-    {
-        $this->db->where($where);
-        $query = $this->db->get("action_responses");
-        return $query->num_rows();
-    }
-
-    public function get_responses($limit, $start, $order, $order_method, $where)
-    {
-        if ($where != null) {
-            $this->db->where($where);
-        }
-
-        $this->db->limit($limit, $start);
-        $this->db->order_by($order, $order_method);
-
-        return $this->db->get('action_responses')->result();
-    }
-
     public function get_action_package($where)
     {
         $this->db->select('action_card_package_id');
         $this->db->where($where);
+        
         return $this->db->get('action_cards')->result();
     }
 
-    public function count_response($action_id)
-    {
-        $this->db->select('response_id');
-        $this->db->distinct('response_id');
-        $this->db->where('action_id', $action_id);
-        $query = $this->db->get("action_responses");
-        
-        return $query->num_rows();
-    }
-
-    public function edit_package_name($action_id)
-    {
-        $package_name = $this->input->post('new_package_name');
-
-        $card_data = array(
-            'action_card_package' => $package_name,
-        );
-
-        $this->db->set($card_data);
-        $this->db->where('action_card_id', $action_id);
-
-        if ($this->db->update('action_cards')) {
-            $response_data = array(
-                'action_package' => $package_name,
-            );
-            $this->db->set($response_data);
-            $this->db->where('action_id', $action_id);
-
-            if ($this->db->update('action_responses')) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
 }

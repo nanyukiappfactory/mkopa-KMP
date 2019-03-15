@@ -228,10 +228,6 @@ class Group extends admin
         $v_data['users'] = $users;
         $v_data['page_header'] = "Users of " . $group_name;
 
-        //$v_data["links"] = $this->pagination->create_links();
-        // $v_data["counter"] = $start;
-        // $v_data["order_method"] = $order_method == "DESC" ? "ASC" : "DESC";
-
         $data = array(
             "title" => $this->site_model->display_page_title(),
             "page_header" => "Users of " . $group_name,

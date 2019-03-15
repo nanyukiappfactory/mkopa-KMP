@@ -32,75 +32,99 @@ class Action extends CI_Controller
         //Load models
         $this->load->model('action_model');
         $this->load->model('group_model');
+        $this->load->model('actioncard_model');
     }
 
     public function index()
     {
         $params = $_SERVER['QUERY_STRING'];
-        if ($params != null || $params != "") {
+        if ($params != null || $params != "") 
+        {
             $validation_token = str_replace('validationToken=', '', $params);
             echo ($validation_token);
-        } else {
+        } 
+        else 
+        {
             $json_string = file_get_contents("php://input");
 
             $json_object = json_decode($json_string);
 
-            if (is_array(json_decode($json_string, true))) {
+            if (is_array(json_decode($json_string, true))) 
+            {
                 $event_type = $json_object->eventType;
 
                 //fetch group
                 $group_unique_id = $json_object->data->groupId;
-                $group_details = $this->group_model->get_group_details($group_unique_id);
+				$group_details = $this->group_model->get_group_details($group_unique_id);
+				
                 $group_name = $group_details[0]->group_name;
-                $action_card_unique_id = $json_object->data->actionId;
+				$action_card_unique_id = $json_object->data->actionId;
+				
+				$existed_action_id = NULL;
 
-                if (strpos($event_type, 'Response') != false || strpos($event_type, 'response') != false) {
+                if ((strpos($event_type, 'Response') != false) || (strpos($event_type, 'response') != false))
+                {
+					
+                    $if_action_exists = $this->actioncard_model->check_if_action_exists($action_card_unique_id);
 
-                    $if_action_exists = $this->action_model->check_if_action_exists($action_card_unique_id);
+                    if ($if_action_exists == false) 
+                    {
+                      	$to_do = 'save';
+                    } 
+                    else 
+                    {
+						$existed_action_id = $if_action_exists->action_card_id;
 
-                    if ($if_action_exists == false) {
-                        $action_card_id = $this->action_model->save_action_card($json_object, $group_name, 'save');
+                    	$to_do = 'update';
+					}
+					
 
-                        if ($action_card_id) {
-                            $response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
-                            $response_id = $json_object->data->responseId;
-                            $event_id = $json_object->eventId;
+				} 
+				else if (strpos($event_type, 'Created') != false || strpos($event_type, 'Created') != false) 
+				{
+					$to_do = 'created';
+				}
+				
+				
+				$db_result = $this->actioncard_model->save_action_card($json_object, $group_name, $to_do, $existed_action_id);
 
-                            foreach ($response_with_questions as $key => $response_with_question) {
-                                $action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id);
-                            }
+				if($to_do == 'save' || $to_do == 'created')
+				{
+					$action_card_id = $db_result;
+				}
+				else if($to_do == 'update')
+				{
+					$action_card_id = $if_action_exists->action_card_id;
+				}
 
-                            echo $action_response_question_id;
-                        }
-                    } else {
+				if (($action_card_id != FALSE) && ($to_do != 'created')) 
+				{
 
-                        $action_card_id = $if_action_exists->action_card_id;
+					$response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
 
-                        if ($this->action_model->save_action_card($json_object, $group_name, 'update', $action_card_id)) {
+					$response_id = $json_object->data->responseId;
 
-                            $action_card_name = $if_action_exists->action_card_package;
+					$event_id = $json_object->eventId;
 
-                            $response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
-                            $response_id = $json_object->data->responseId;
-                            $event_id = $json_object->eventId;
+					foreach ($response_with_questions as $key => $response_with_question) 
+					{
+						$action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id);
+					}
 
-                            foreach ($response_with_questions as $key => $response_with_question) {
-                                $action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id, $action_card_name);
-                            }
+					echo "ActionResponse";
+				}
+				else
+				{
+					echo "ActionCreated";
+				}
 
-                            echo $action_response_question_id;
-                        }
-                    }
-
-                } else if (strpos($event_type, 'Created') != false || strpos($event_type, 'Created') != false) {
-                    $action_card_id = $this->action_model->save_action_created($json_object, $group_name);
-
-                    echo $action_card_id;
-                }
-            } else {
+			} 
+			else 
+			{
                 echo "No body was found";
             }
         }
 
-    }
+	}
+	
 }
