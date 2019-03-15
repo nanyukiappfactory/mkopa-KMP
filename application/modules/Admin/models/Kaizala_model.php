@@ -153,8 +153,8 @@ class Kaizala_model extends CI_Model
                 "MemberAdded",
                 "MemberRemoved",
             ),
-            // "callBackUrl" => "https://mkopa-dev.azurewebsites.net/actions/get-actions",
-            "callBackUrl" => "https://webhook.site/d4d037f4-275d-45fd-8a23-b905d83e82c3",
+            "callBackUrl" => "https://mkopa-dev.azurewebsites.net/actions/get-actions",
+            // "callBackUrl" => "https://webhook.site/d4d037f4-275d-45fd-8a23-b905d83e82c3",
             "callBackToken" => "tokenToBeVerifiedByCallback",
             "callBackContext" => "https://mkopa-dev.azurewebsites.net/actions/get-action-cards",
         );
