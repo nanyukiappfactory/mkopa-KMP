@@ -48,25 +48,54 @@ class Action extends CI_Controller
             if (is_array(json_decode($json_string, true))) {
                 $event_type = $json_object->eventType;
 
+                //fetch group
+                $group_unique_id = $json_object->data->groupId;
+                $group_details = $this->group_model->get_group_details($group_unique_id);
+                $group_name = $group_details[0]->group_name;
+                $action_card_unique_id = $json_object->data->actionId;
+
                 if (strpos($event_type, 'Response') != false || strpos($event_type, 'response') != false) {
-                    //fetch group
-                    $group_unique_id = $json_object->data->groupId;
-                    $group_details = $this->group_model->get_group_details($group_unique_id);
-                    $group_name = $group_details[0]->group_name;
-                    $action_card_id = $this->action_model->save_action_card($json_object, $group_name);
 
-                    if ($action_card_id) {
-                        $response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
-                        $response_id = $json_object->data->responseId;
-                        $event_id = $json_object->eventId;
+                    $if_action_exists = $this->action_model->check_if_action_exists($action_card_unique_id);
 
-                        foreach ($response_with_questions as $key => $response_with_question) {
-                            $action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id);
+                    if ($if_action_exists == false) {
+                        $action_card_id = $this->action_model->save_action_card($json_object, $group_name, 'save');
+
+                        if ($action_card_id) {
+                            $response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
+                            $response_id = $json_object->data->responseId;
+                            $event_id = $json_object->eventId;
+
+                            foreach ($response_with_questions as $key => $response_with_question) {
+                                $action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id);
+                            }
+
+                            echo $action_response_question_id;
                         }
+                    } else {
 
-                        echo $action_response_question_id;
+                        $action_card_id = $if_action_exists->action_card_id;
+
+                        if ($this->action_model->save_action_card($json_object, $group_name, 'update', $action_card_id)) {
+
+                            $action_card_name = $if_action_exists->action_card_package;
+
+                            $response_with_questions = $json_object->data->responseDetails->responseWithQuestions;
+                            $response_id = $json_object->data->responseId;
+                            $event_id = $json_object->eventId;
+
+                            foreach ($response_with_questions as $key => $response_with_question) {
+                                $action_response_question_id = $this->action_model->save_action_response_question($response_with_question, $json_object, $action_card_id, $group_details, $response_id, $event_id, $action_card_name);
+                            }
+
+                            echo $action_response_question_id;
+                        }
                     }
 
+                } else if (strpos($event_type, 'Created') != false || strpos($event_type, 'Created') != false) {
+                    $action_card_id = $this->action_model->save_action_created($json_object, $group_name);
+
+                    echo $action_card_id;
                 }
             } else {
                 echo "No body was found";

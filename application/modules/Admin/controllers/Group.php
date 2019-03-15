@@ -16,7 +16,7 @@ class Group extends admin
         $this->load->model('site/site_model');
     }
 
-    public function index($order = 'created_at', $order_method = 'DESC')
+    public function index($order = 'group_name', $order_method = 'ASC')
     {
         //pagination
         $segment = 5;
@@ -281,6 +281,10 @@ class Group extends admin
         //get group-unique id
         $group_unique_id_obj = $this->group_model->get_group_unique_id($group_id);
         $group_unique_id = $group_unique_id_obj->group_unique_id;
+
+        // $webhooks = $this->kaizala_model->all_webhooks($group_unique_id);
+
+        // echo json_encode($webhooks);die();
         
         $result = $this->kaizala_model->create_event_webhook($group_unique_id);
 
@@ -309,10 +313,12 @@ class Group extends admin
     public function deactivate_group($group_id)
     {
         //get group-unique id
-        $group_unique_id_obj = $this->group_model->get_group_unique_id($group_id);
-        $group_unique_id = $group_unique_id_obj->group_unique_id;
+        $webhook_id_obj = $this->group_model->get_webhook_id($group_id);
+        $webhook_id = $webhook_id_obj->webhook_id;
+
+        // echo json_encode($webhook_id);die();
         
-        $result = $this->kaizala_model->delete_event_webhook($group_unique_id);
+        $result = $this->kaizala_model->delete_event_webhook($webhook_id);
 
         if($result[0] == TRUE)
         {

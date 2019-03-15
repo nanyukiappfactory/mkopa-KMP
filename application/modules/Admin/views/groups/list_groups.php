@@ -15,13 +15,13 @@
 					<tr>
 						<th>#</th>
 						<th>
-							<?php echo anchor(base_url() . 'administration/all-groups/group_type/' . $order_method, 'Group Name'); ?>
+							<?php echo anchor(base_url() . 'administration/all-groups/group_name/' . $order_method, 'Group Name'); ?>
 						</th>
 						<th>
 							<?php echo anchor(base_url() . 'administration/all-groups/group_type/' . $order_method, 'Group Type'); ?>
 						</th>
 						<th>
-							<?php echo anchor(base_url() . 'administration/all-groups/group_type/' . $order_method, 'Created Date'); ?>
+							<?php echo anchor(base_url() . 'administration/all-groups/created_at/' . $order_method, 'Created Date'); ?>
 						</th>
 						<th>Actions</th>
 					</tr>
