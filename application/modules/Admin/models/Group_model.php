@@ -88,24 +88,18 @@ class Group_model extends CI_Model
     {
         $this->db->select('group_unique_id');
         $this->db->where('group_id = ' . $group_id);
-        $query = $this->db->get('groups')->result();
+        $query = $this->db->get('groups')->row();
 
-        // $query = json_encode($query);
-        // $query = json_decode($query, true);
-
-        return $query[0];
+        return $query;
     }
 
     public function get_webhook_id($group_id)
     {
         $this->db->select('webhook_id');
         $this->db->where('group_id = ' . $group_id);
-        $query = $this->db->get('groups')->result();
+        $query = $this->db->get('groups')->row();
 
-        // $query = json_encode($query);
-        // $query = json_decode($query, true);
-
-        return $query[0];
+        return $query;
     }
 
     public function get_group_details($group_unique_id)
