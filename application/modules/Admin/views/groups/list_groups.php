@@ -38,8 +38,7 @@ if ($kaiza_groups->num_rows() > 0)
 					data-target='#groupActions" . $row->group_id . "'>
 					Action Cards
 				</button>
-				<a href='" . base_url() . "administration/group-users/" . $group_name ."/" . $row->group_id . "
-					class='btn btn-secondary btn-sm'><i class='fa fa-users'></i></a>" .
+				<a href='" . base_url() . "administration/group-users/" . $group_name ."/" . $row->group_id . "' class='btn btn-secondary btn-sm'><i class='fa fa-users'></i></a>" .
 					$td_group_status . "
 			</td>
 		</tr>
