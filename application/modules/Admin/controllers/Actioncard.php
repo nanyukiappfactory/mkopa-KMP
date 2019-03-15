@@ -37,7 +37,7 @@ class Actioncard extends admin
 
     public function get_responses($action_id, $order = 'created_at', $order_method = 'DESC')
     {
-        $v_data["action_responses"] = $this->action_model->get_responses($order, $order_method);
+        $v_data["action_responses"] = $this->action_model->get_responses($order, $order_method, $action_id);
 
         $v_data['action_id'] = $action_id;
         

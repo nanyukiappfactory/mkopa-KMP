@@ -8,7 +8,7 @@ class Actioncard_model extends CI_Model
         {
             $action_card_unique_id = $json_object->data->actionId;
 
-            $action_package_id = $control == 'save' ? (array_key_exists('actionPackageId', $json_object->data) ? $json_object->data->actionPackageId : $json_object->data->actionId) : 'null';
+            $action_package_id = $control == 'save' ? (array_key_exists('actionPackageId', $json_object->data) ? $json_object->data->actionPackageId : $json_object->data->actionId) : $json_object->data->actionId;
             $group_unique_id = $json_object->data->groupId;
             $action_card_subscription_id = $json_object->subscriptionId;
             $action_card_object_id = $json_object->objectId;

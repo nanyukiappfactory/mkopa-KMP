@@ -142,10 +142,10 @@ class Action_model extends CI_Model
         return $query->num_rows();
     }
 
-    public function get_responses($order, $order_method)
+    public function get_responses($order, $order_method, $action_id)
     {
         $this->db->select('*');
-        
+        $this->db->where('action_id', $action_id);
         $this->db->order_by($order, $order_method);
 
         return $this->db->get('action_responses')->result();

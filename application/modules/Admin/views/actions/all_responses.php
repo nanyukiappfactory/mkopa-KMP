@@ -1,20 +1,17 @@
-<?php 
+<?php
 $table_row_responses = "";
 
-if (count($action_responses) > 0) 
-{
-	$count = 0;
-	$duplicates = array();
-	$single_data['action_responses'] = $action_responses;
+if (count($action_responses) > 0) {
+    $count = 1;
+    $duplicates = array();
+    $single_data['action_responses'] = $action_responses;
 
-	foreach ($action_responses as $row) 
-	{
-		if ((count($duplicates) == 0) || !(in_array($row->response_id, $duplicates))) 
-		{
+    foreach ($action_responses as $row) {
+        if ((count($duplicates) == 0) || !(in_array($row->response_id, $duplicates))) {
             $single_data['response_id'] = $row->response_id;
-			$single_data['responder_name'] = $row->responder_name;
+            $single_data['responder_name'] = $row->responder_name;
 
-			$table_row_responses .= "
+            $table_row_responses .= "
 				<tr>
 					<td>" . $count++ . "</td>
 					<td>" . $row->action_package . "</td>
@@ -24,16 +21,16 @@ if (count($action_responses) > 0)
 					<td>" . date('d M Y H:i', strtotime($row->created_at)) . "</td>
 					<td>
 						<button type='button' class='btn btn-danger btn-sm' data-toggle='modal'
-							data-target='#singleResponse" .  $row->response_id . "'>
+							data-target='#singleResponse" . $row->response_id . "'>
 								Q&As
 						</button>
 					</td>
 				</tr>
 			";
-			$this->load->view('actions/single_response', $single_data);
-			array_push($duplicates, $row->response_id);
-		}
-	}
+            $this->load->view('actions/single_response', $single_data);
+            array_push($duplicates, $row->response_id);
+        }
+    }
 }
 ?>
 <div class="card shadow mb-4">
@@ -68,7 +65,7 @@ if (count($action_responses) > 0)
                     </tr>
                 </thead>
                 <tbody>
-                    <?php echo $table_row_responses;?>
+                    <?php echo $table_row_responses; ?>
                 </tbody>
             </table>
         </div>
