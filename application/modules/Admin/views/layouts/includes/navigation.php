@@ -7,7 +7,7 @@
 
     <!-- Topbar Search -->
 
-    <?php
+<?php
 if ($check == 'groups') 
 {
 	$search_params = $this->session->userdata('search_params');
@@ -72,7 +72,7 @@ if ($check == 'groups')
                                 <select class="form-control bg-light border-0 small custom-select2" id="group_name"
                                     name="group_name" aria-label="Search" aria-describedby="basic-addon2">
                                     <option value="">Select Group Name..</option>
-                                    <?php $group_name_options;?>
+                                    <?php echo $group_name_options;?>
                                 </select>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ if ($check == 'groups')
                                 <select class="form-control bg-light border-0 small custom-select2" id="group_type"
                                     name="group_type" aria-label="Search" aria-describedby="basic-addon2">
                                     <option value="">Select Group Type..</option>
-                                    <?php $group_type_options;?>
+                                    <?php echo $group_type_options;?>
                                 </select>
                             </div>
                         </div>
