@@ -5,7 +5,7 @@
     <?php echo $title; ?>
 </title>
 
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/custom/themes/vendor/fontawesome/css/all.css">
 
 <!-- Custom styles for this template-->
 <link href="<?php echo base_url(); ?>assets/themes/custom/styles.css" rel="stylesheet">
