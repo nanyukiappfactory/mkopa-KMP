@@ -107,8 +107,6 @@ if ($check == 'groups')
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                <img class="col-lg-9 col-md-9 col-sm-9 col-xs-9 logo-holder float-right"
-                    src="<?php echo base_url(); ?>assets/images/logo.png">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-left shadow animated--grow-in" aria-labelledby="userDropdown">

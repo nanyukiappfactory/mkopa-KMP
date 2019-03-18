@@ -35,7 +35,7 @@
 
     <li class="nav-item">
         <a class="nav-link d-sm-inline-block btn btn-sm btn-dark shadow-sm"
-            href="<?php echo base_url(); ?>administration/all-groups">
+            href="<?php echo base_url(); ?>reports/all-reports">
             <i class="fas fa-download fa-sm text-white-50"></i>
             <span>Generate Report</span></a>
     </li>

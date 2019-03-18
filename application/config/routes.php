@@ -83,3 +83,8 @@ $route['administration/all-responses/(:num)/(:any)/(:any)'] = 'admin/actioncard/
 $route['administration/all-actions/(:any)/(:any)'] = 'admin/actioncard/index/$1/$2';
 $route['administration/all-responses/(:num)'] = 'admin/actioncard/get_responses/$1';
 $route['administration/edit-package-name/(:num)'] = 'admin/actioncard/edit_package_name/$1';
+
+/**
+ * Reports
+ */
+$route['reports/all-reports'] = 'admin/report/index';
