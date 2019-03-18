@@ -282,7 +282,7 @@ class Group extends admin
 
         // echo json_encode($webhooks);die();
         
-        $result = $this->kaizala_model->create_event_webhook($group_unique_id);
+        $result = $this->kaizala_model->create_event_webhook($group_unique_id, base_url());
 
         if($result[0] == TRUE)
         {

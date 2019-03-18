@@ -137,7 +137,7 @@ class Kaizala_model extends CI_Model
         }
     }
 
-    public function create_event_webhook($group_unique_id)
+    public function create_event_webhook($group_unique_id, $base_url)
     {
         $send_data = array(
             "objectId" => $group_unique_id,
@@ -153,10 +153,9 @@ class Kaizala_model extends CI_Model
                 "MemberAdded",
                 "MemberRemoved",
             ),
-            "callBackUrl" => "https://mkopa-dev.azurewebsites.net/actions/get-actions",
-            // "callBackUrl" => "https://webhook.site/d4d037f4-275d-45fd-8a23-b905d83e82c3",
+            "callBackUrl" => $base_url . "actions/get-actions",
             "callBackToken" => "tokenToBeVerifiedByCallback",
-            "callBackContext" => "https://mkopa-dev.azurewebsites.net/actions/get-action-cards",
+            "callBackContext" => "context",
         );
 
         $curl = curl_init();
