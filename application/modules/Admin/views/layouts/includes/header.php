@@ -1,13 +1,27 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
 <title>
-    <?php echo $title; ?>
+	<?php echo $title; ?>
 </title>
 
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/custom/themes/vendor/fontawesome/css/all.css">
-
-<!-- Custom styles for this template-->
-<link href="<?php echo base_url(); ?>assets/themes/custom/styles.css" rel="stylesheet">
-
+<!-- Site favicon -->
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.png" type="image/x-icon" />
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+<!-- CSS -->
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/custom/themes/vendor/styles/style.css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendor/customs/fontawesome/css/font-awesome.css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-119386393-1');
+</script>

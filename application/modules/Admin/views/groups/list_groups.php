@@ -13,7 +13,7 @@ if ($kaiza_groups->num_rows() > 0)
 			$td_group_status = "
 				<a href='" . base_url() . "administration/deactivate-group/" . $row->group_id . "'
 				class='btn btn-sm btn-warning' onclick='return confirm(\"" . $message . "\")'>
-					<i class='fas fa-thumbs-down'></i>
+					<i class='fa fa-thumbs-down'></i>
 				</a>
 			";
 		}
@@ -22,7 +22,7 @@ if ($kaiza_groups->num_rows() > 0)
 			$message = "Are you Sure You want to Activate???";
 			$td_group_status = "
 				<a href='" . base_url() . "administration/activate-group/" . $row->group_id . "' class='btn btn-sm btn-success' onclick='return confirm(\"" . $message . "\")'>
-					<i class='fas fa-thumbs-up'></i>
+					<i class='fa fa-thumbs-up'></i>
 				</a>
 			";
 		}
@@ -54,10 +54,9 @@ if ($kaiza_groups->num_rows() > 0)
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="d-sm-flex align-items-center justify-content-between">
-            <!-- <p><?php echo $links; ?></p> -->
             <a href="<?php echo base_url(); ?>administration/fetch-groups"
                 class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Fetch Groups</a>
+                    class="fa fa-download fa-sm text-white-50"></i> Fetch Groups</a>
         </div>
 
         <div class="table-responsive">
